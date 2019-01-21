@@ -1,0 +1,20 @@
+{
+  "name": "nodecg-esakeys",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esamarathon/nodecg-esakeys.git"
+  },
+  "author": "zoton2",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/esamarathon/nodecg-esakeys/issues"
+  },
+  "homepage": "https://github.com/esamarathon/nodecg-esakeys#readme",
+  "nodecg": {
+	  "compatibleRange": "^1.0.0",
+	  "bundleDependencies": {
+		  "nodecg-obs-util": "^1.0.0"
+	  }
+  }
+}

@@ -12,9 +12,12 @@
   },
   "homepage": "https://github.com/esamarathon/nodecg-esakeys#readme",
   "nodecg": {
-	  "compatibleRange": "^1.0.0",
-	  "bundleDependencies": {
-		  "nodecg-obs-util": "^1.0.0"
-	  }
+    "compatibleRange": "^1.0.0",
+    "bundleDependencies": {
+      "nodecg-obs-util": "^1.0.0"
+    }
+  },
+  "dependencies": {
+    "xkeys": "github:zoton2/xkeys"
   }
 }

@@ -45,9 +45,15 @@ xkeys.on('downKey', keyIndex => {
 			xkeys.setBacklight(15, true, true);
 
 			// Mute the audio source set in the config.
-			obs.send('SetMute', {source: nodecg.bundleConfig.emergencyMode.audioSource, mute: true});
+			var muteOptions = {source: nodecg.bundleConfig.emergencyMode.audioSource, mute: true};
+			obs.send('SetMute', muteOptions).catch((err) => {
+				nodecg.log.warn(`Cannot mute OBS source [${muteOptions.source}]: ${err.error}`);
+			});
 			// Switch to the scene set in the config.
-			obs.send('SetCurrentScene', {'scene-name': nodecg.bundleConfig.emergencyMode.scene});
+			var sceneOptions = {'scene-name': nodecg.bundleConfig.emergencyMode.scene};
+			obs.send('SetCurrentScene', sceneOptions).catch((err) => {
+				nodecg.log.warn(`Cannot switch OBS scene [${sceneOptions['scene-name']}]: ${err.error}`);
+			});
 		}
 	}
 });

@@ -335,15 +335,19 @@ function turnOffRackKeys() {
 // Applies cropping to all racks on the current game capture.
 function applyCropping(cap, cropValues) {
 	for (var i = 0; i < 4; i++) {
-		// Setup options for this rack.
-		var options = {
-			'scene-name': gameCaptureKey[cap],
-			'item': rackKey[i],
-			'crop': cropValues
-		};
+		(function(i) {
+			// Setup options for this rack.
+			var options = {
+				'scene-name': gameCaptureKey[cap],
+				'item': rackKey[i],
+				'crop': cropValues
+			};
 
-		// Send settings to OBS.
-		obs.send('SetSceneItemProperties', options);
+			// Send settings to OBS.
+			obs.send('SetSceneItemProperties', options).catch((err) => {
+				nodecg.log.warn(`Cannot change OBS source settings [${options['scene-name']}: ${options.item}]: ${err.error}`);
+			});
+		} (i));
 	}
 }
 
@@ -351,18 +355,22 @@ function applyCropping(cap, cropValues) {
 // We have to loop through all the racks to be able to turn off the other ones.
 function changeRack() {
 	for (var i = 0; i < 4; i++) {
-		// Setup options for this rack.
-		var options = {
-			'scene-name': gameCaptureKey[capture],
-			'item': rackKey[i],
-			'visible': false
-		};
+		(function(i) {
+			// Setup options for this rack.
+			var options = {
+				'scene-name': gameCaptureKey[capture],
+				'item': rackKey[i],
+				'visible': false
+			};
 
-		// If this rack is the one we want visible, make it so.
-		if (i === rack[capture])
-			options.visible = true;
+			// If this rack is the one we want visible, make it so.
+			if (i === rack[capture])
+				options.visible = true;
 
-		// Send settings to OBS.
-		obs.send('SetSceneItemProperties', options);
+			// Send settings to OBS.
+			obs.send('SetSceneItemProperties', options).catch((err) => {
+				nodecg.log.warn(`Cannot change OBS source settings [${options['scene-name']}: ${options.item}]: ${err.error}`);
+			});
+		} (i));
 	}
 }

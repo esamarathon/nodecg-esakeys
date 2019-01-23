@@ -271,19 +271,23 @@ function getCameraCropping(i) {
 // We have to loop through all the camera sources to be able to turn off the other ones.
 function changeCameraSource() {
 	for (var i = 0; i < 3; i++) {
-		// Setup options for this camera source.
-		var options = {
-			'scene-name': cameraCaptureKey[capture],
-			'item': cameraSourceKey[i],
-			'visible': false
-		};
+		(function(i) {
+			// Setup options for this camera source.
+			var options = {
+				'scene-name': cameraCaptureKey[capture],
+				'item': cameraSourceKey[i],
+				'visible': false
+			};
 
-		// If this camera source is the one we want visible, make it so.
-		if (i === cam[capture])
-			options.visible = true;
+			// If this camera source is the one we want visible, make it so.
+			if (i === cam[capture])
+				options.visible = true;
 
-		// Send settings to OBS.
-		obs.send('SetSceneItemProperties', options);
+			// Send settings to OBS.
+			obs.send('SetSceneItemProperties', options).catch((err) => {
+				nodecg.log.warn(`Cannot change OBS source settings [${options['scene-name']}: ${options.item}]: ${err.error}`);
+			});
+		} (i));
 	}
 }
 
@@ -297,5 +301,7 @@ function applyCropping() {
 	};
 
 	// Send settings to OBS.
-	obs.send('SetSceneItemProperties', options);
+	obs.send('SetSceneItemProperties', options).catch((err) => {
+		nodecg.log.warn(`Cannot change OBS source settings [${options['scene-name']}: ${options.item}]: ${err.error}`);
+	});
 }

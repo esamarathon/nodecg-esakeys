@@ -1,12 +1,11 @@
-var nodecg = require('./utils/nodecg-api-context').get();
+const clone = require('clone');
+const nodecg = require('./utils/nodecg-api-context').get();
 const xkeys = require('./utils/xkeys');
 const obs = nodecg.extensions['nodecg-obs-util'];
-var emergencyMode = nodecg.Replicant('emergencyMode');
-
-const clone = require('clone');
+const emergencyMode = nodecg.Replicant('emergencyMode');
 
 // Default cropping values.
-var cropZero = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0};
+const cropZero = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0};
 
 // Initial cropping values for all captures.
 var cropCache = {
@@ -19,14 +18,14 @@ var cropCache = {
 // Stores data for what keys are selected and such.
 var capture = -1; // 0 -> 3 (as of now).
 var cropSide = -1; //0 top, 1 right, 2 bottom, 3 left
-var rack = {0: 0, 1: 1, 2: 2, 3: 3}; // Key: game capture, Value: rack
+const rack = {0: 0, 1: 1, 2: 2, 3: 3}; // Key: game capture, Value: rack
 
 var captureTimeout;
 var resetAllCroppingDoubleCheck = false;
 var resetAllCroppingTimeout;
 
 // Key between code value and scene name in OBS.
-var gameCaptureKey = {
+const gameCaptureKey = {
 	0: nodecg.bundleConfig.obsScenes.capture1,
 	1: nodecg.bundleConfig.obsScenes.capture2,
 	2: nodecg.bundleConfig.obsScenes.capture3,
@@ -34,7 +33,7 @@ var gameCaptureKey = {
 };
 
 // Key between code value and source name in OBS.
-var rackKey = {
+const rackKey = {
 	0: nodecg.bundleConfig.obsSources.rack1,
 	1: nodecg.bundleConfig.obsSources.rack2,
 	2: nodecg.bundleConfig.obsSources.rack3,

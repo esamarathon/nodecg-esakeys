@@ -1,6 +1,6 @@
 'use strict';
 
-var nodecg = require('./nodecg-api-context').get();
+const nodecg = require('./nodecg-api-context').get();
 
 // Set up xKeys.
 const XKeys = require('xkeys');
@@ -25,7 +25,7 @@ myXKeysPanel.on('error', err => {
 
 // Help function for dev.
 myXKeysPanel.on('downKey', keyIndex => {
-	//console.log(keyIndex);
+	//nodecg.log.info(keyIndex);
 });
 
 module.exports = myXKeysPanel;

@@ -1,16 +1,15 @@
-var nodecg = require('./utils/nodecg-api-context').get();
+const clone = require('clone');
+const nodecg = require('./utils/nodecg-api-context').get();
 const xkeys = require('./utils/xkeys');
 const obs = nodecg.extensions['nodecg-obs-util'];
-var emergencyMode = nodecg.Replicant('emergencyMode');
-
-const clone = require('clone');
+const emergencyMode = nodecg.Replicant('emergencyMode');
 
 // Stores data for what keys are selected and such.
 var capture = -1; // 0 -> 1 (as of now).
-var cam = {0: 0, 1: 1}; // Key: camera capture, Value: camera source
+const cam = {0: 0, 1: 1}; // Key: camera capture, Value: camera source
 
 // Default cropping values.
-var cropZero = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0};
+const cropZero = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0};
 
 // Initial cropping values for all cameras.
 var cropCache = {
@@ -21,13 +20,13 @@ var cropCache = {
 var captureTimeout;
 
 // Key between code value and scene name in OBS.
-var cameraCaptureKey = {
+const cameraCaptureKey = {
 	0: nodecg.bundleConfig.obsScenes.camera1,
 	1: nodecg.bundleConfig.obsScenes.camera2,
 };
 
 // Key between code value and source name in OBS.
-var cameraSourceKey = {
+const cameraSourceKey = {
 	0: nodecg.bundleConfig.obsSources.cam1,
 	1: nodecg.bundleConfig.obsSources.cam2,
 	2: nodecg.bundleConfig.obsSources.cam3

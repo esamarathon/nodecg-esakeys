@@ -1,7 +1,7 @@
-var nodecg = require('./utils/nodecg-api-context').get();
+const nodecg = require('./utils/nodecg-api-context').get();
 const xkeys = require('./utils/xkeys');
 const obs = nodecg.extensions['nodecg-obs-util'];
-var emergencyMode = nodecg.Replicant('emergencyMode');
+const emergencyMode = nodecg.Replicant('emergencyMode');
 
 var emergencyDoubleCheck = false;
 var emergencyTimeout;

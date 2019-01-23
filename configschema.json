@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"obsScenes": {
+			"type": "object",
+			"properties": {
+				"gameLayout": {"type": "string", "default": "Game Layout"},
+				"capture1": {"type": "string", "default": "Game Capture 1"},
+				"capture2": {"type": "string", "default": "Game Capture 2"},
+				"capture3": {"type": "string", "default": "Game Capture 3"},
+				"capture4": {"type": "string", "default": "Game Capture 4"},
+				"camera1": {"type": "string", "default": "Camera Capture 1"},
+				"camera2": {"type": "string", "default": "Camera Capture 2"}
+			}
+		},
+		"obsSources": {
+			"type": "object",
+			"properties": {
+				"rack1": {"type": "string", "default": "Rack 1"},
+				"rack2": {"type": "string", "default": "Rack 2"},
+				"rack3": {"type": "string", "default": "Rack 3"},
+				"rack4": {"type": "string", "default": "Rack 4"},
+				"cam1": {"type": "string", "default": "Camera 1"},
+				"cam2": {"type": "string", "default": "Camera 2"},
+				"cam3": {"type": "string", "default": "Camera 3"}
+			}
+		},
+		"emergencyMode": {
+			"type": "object",
+			"properties": {
+				"scene": {"type": "string", "default": "Emergency Scene"},
+				"audioSource": {"type": "string", "default": "Mic/Aux"}
+			}
+		}
+	}
+}

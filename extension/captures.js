@@ -40,6 +40,8 @@ const rackKey = {
 	3: nodecg.bundleConfig.obsSources.rack4
 };
 
+nodecg.listenFor('turnOffCaptureSelection', turnOffCaptureSelection);
+
 // Fired when the OBS WebSocket actually connects.
 // We already check this in obs.js but we need to do more on connection here.
 obs.on('ConnectionOpened', () => {
@@ -95,6 +97,9 @@ xkeys.on('downKey', keyIndex => {
 
 	// All 4 of the "Game Capture" selection keys.
 	if (keyIndex === 60 || keyIndex === 61 || keyIndex === 62 || keyIndex === 63) {
+		// Make sure the cameras can't be toggled at the same time.
+		nodecg.sendMessage('turnOffCameraSelection');
+
 		var oldCapture = capture;
 		capture = keyIndex-60;
 		xkeys.setBacklight(keyIndex, true, true); // New key, On, Red

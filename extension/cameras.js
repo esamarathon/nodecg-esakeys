@@ -32,6 +32,8 @@ const cameraSourceKey = {
 	2: nodecg.bundleConfig.obsSources.cam3
 };
 
+nodecg.listenFor('turnOffCameraSelection', turnOffCaptureSelection);
+
 // Fired when the OBS WebSocket actually connects.
 // We already check this in obs.js but we need to do more on connection here.
 obs.on('ConnectionOpened', () => {
@@ -70,6 +72,9 @@ xkeys.on('downKey', keyIndex => {
 
 	// All 2 of the "Camera Capture" selection keys.
 	if (keyIndex === 64 || keyIndex === 65) {
+		// Make sure the captures can't be toggled at the same time.
+		nodecg.sendMessage('turnOffCaptureSelection');
+
 		var oldCapture = capture;
 		capture = keyIndex-64;
 		xkeys.setBacklight(keyIndex, true, true); // New key, On, Red

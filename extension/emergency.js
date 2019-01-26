@@ -6,6 +6,8 @@ const emergencyMode = nodecg.Replicant('emergencyMode');
 var emergencyDoubleCheck = false;
 var emergencyTimeout;
 
+if (!Object.entries(xkeys).length) return;
+
 // Listen to pressed keys.
 xkeys.on('downKey', keyIndex => {
 	// Disable everything if emergency mode is on.

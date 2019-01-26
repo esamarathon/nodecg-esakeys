@@ -4,6 +4,8 @@ const xkeys = require('./utils/xkeys');
 const obs = nodecg.extensions['nodecg-obs-util'];
 const emergencyMode = nodecg.Replicant('emergencyMode');
 
+if (!Object.entries(xkeys).length) return;
+
 // Default cropping values.
 const cropZero = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0};
 

@@ -4,6 +4,8 @@ const xkeys = require('./utils/xkeys');
 const obs = nodecg.extensions['nodecg-obs-util'];
 const emergencyMode = nodecg.Replicant('emergencyMode');
 
+if (!Object.entries(xkeys).length) return;
+
 // Stores data for what keys are selected and such.
 var capture = -1; // 0 -> 1 (as of now).
 const cam = {0: 0, 1: 1}; // Key: camera capture, Value: camera source

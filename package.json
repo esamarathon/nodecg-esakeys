@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "clone": "^2.1.2",
-    "xkeys": "github:zoton2/xkeys"
+    "xkeys": "^0.1.2"
   }
 }

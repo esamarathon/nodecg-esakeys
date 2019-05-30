@@ -1,7 +1,7 @@
 const clone = require('clone');
 const nodecg = require('./utils/nodecg-api-context').get();
 const xkeys = require('./utils/xkeys');
-const obs = nodecg.extensions['nodecg-obs-util'];
+const obs = nodecg.extensions['esa-layouts'].obs;
 const emergencyMode = nodecg.Replicant('emergencyMode');
 
 if (!Object.entries(xkeys).length) return;
@@ -23,8 +23,8 @@ var captureTimeout;
 
 // Key between code value and scene name in OBS.
 const cameraCaptureKey = {
-	0: nodecg.bundleConfig.obsScenes.camera1,
-	1: nodecg.bundleConfig.obsScenes.camera2,
+	0: nodecg.bundleConfig.obsGroups.camera1,
+	1: nodecg.bundleConfig.obsGroups.camera2,
 };
 
 // Key between code value and source name in OBS.
@@ -40,27 +40,57 @@ nodecg.listenFor('turnOffCameraSelection', turnOffCaptureSelection);
 // We already check this in obs.js but we need to do more on connection here.
 obs.on('ConnectionOpened', () => {
 	// Runs a camera visibility check using the function below.
-	// 1 loop for camera captures, 1 for camera sources
 	for (var i = 0; i < 2; i++) {
-		for (var j = 0; j < 3; j++) {
-			checkCameraVisibility(i, j);
-		}
+		checkCameraVisibility(i);
 	}
 });
 
 // A bit of a sloppy/lazy way to get current camera visibility on startup from OBS.
 // Used by looping through all camera captures/camera sources and updating the value.
 // If 2 camera sources are visible, this could mess things up.
-function checkCameraVisibility(i, j) {
-	obs.send('GetSceneItemProperties', {
-		'scene-name': cameraCaptureKey[i],
-		'item': cameraSourceKey[j]
-	}, (err, data) => {
-		if (!err) {
-			if (data.visible)
-				cam[i] = j;
+function checkCameraVisibility(i) {
+	obs.send('GetSceneList').then((data) => {
+		const gameLayout = findGameLayout(data);
+		const groupChildren = getGroupChildren(gameLayout.sources, cameraCaptureKey[i]);
+		for (var j = 0; j < groupChildren.length; j++) {
+			const visible = groupChildren[j].render;
+			if (visible) {
+				switch (groupChildren[j].name) {
+					case cameraSourceKey[0]:
+						cam[i] = 0;
+						return;
+					case cameraSourceKey[1]:
+						cam[i] = 1;
+						return;
+					case cameraSourceKey[2]:
+						cam[i] = 2;
+						return;	
+				}
+			}
 		}
+	}).catch((err) => {
+		nodecg.log.warn(`Cannot get OBS scene list: ${err.error}`);
 	});
+
+	obs.send('GetSceneList').then((data) => {
+
+	});
+}
+
+function findGameLayout(data) {
+	for (var i = 0; i < data.scenes.length; i++) {
+		if (data.scenes[i].name === nodecg.bundleConfig.obsScenes.gameLayout) {
+			return data.scenes[i];
+		}
+	}
+}
+
+function getGroupChildren(sceneItems, name) {
+	for (var i = 0; i < sceneItems.length; i++) {
+		if (sceneItems[i].type === 'group' && sceneItems[i].name === name) {
+			return sceneItems[i].groupChildren;
+		}
+	}
 }
 
 // Listen to pressed keys.

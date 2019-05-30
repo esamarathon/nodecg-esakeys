@@ -1,7 +1,7 @@
 const clone = require('clone');
 const nodecg = require('./utils/nodecg-api-context').get();
 const xkeys = require('./utils/xkeys');
-const obs = nodecg.extensions['nodecg-obs-util'];
+const obs = nodecg.extensions['esa-layouts'].obs;
 const emergencyMode = nodecg.Replicant('emergencyMode');
 
 if (!Object.entries(xkeys).length) return;
@@ -67,9 +67,10 @@ function checkCropping(i) {
 	obs.send('GetSceneItemProperties', {
 		'scene-name': gameCaptureKey[i],
 		'item': rackKey[0]
-	}, (err, data) => {
-		if (!err)
-			cropCache[i] = data.crop;
+	}).then((data) => {
+		cropCache[i] = data.crop;
+	}).catch((err) => {
+		nodecg.log.warn(`Cannot get OBS source settings [${gameCaptureKey[i]}: ${rackKey[0]}]: ${err.error}`);
 	});
 }
 
@@ -80,11 +81,12 @@ function checkRackVisibility(i, j) {
 	obs.send('GetSceneItemProperties', {
 		'scene-name': gameCaptureKey[i],
 		'item': rackKey[j]
-	}, (err, data) => {
-		if (!err) {
-			if (data.visible)
+	}).then((data) => {
+		if (data.visible) {
 				rack[i] = j;
 		}
+	}).catch((err) => {
+		nodecg.log.warn(`Cannot get OBS source settings [${gameCaptureKey[i]}: ${rackKey[j]}]: ${err.error}`);
 	});
 }
 

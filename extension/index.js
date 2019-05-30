@@ -7,7 +7,7 @@ module.exports = function(nodecg) {
 	nodecgAPIContext.set(nodecg);
 	const emergencyMode = nodecg.Replicant('emergencyMode', {defaultValue: false, persistent: false});
 	
-	const obs = nodecg.extensions['nodecg-obs-util'];
+	const obs = nodecg.extensions['esa-layouts'].obs;
 	const xkeys = require('./utils/xkeys');
 	const emergency = require('./emergency');
 	const captures = require('./captures');

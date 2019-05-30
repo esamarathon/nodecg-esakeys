@@ -1,6 +1,6 @@
 const nodecg = require('./utils/nodecg-api-context').get();
 const xkeys = require('./utils/xkeys');
-const obs = nodecg.extensions['nodecg-obs-util'];
+const obs = nodecg.extensions['esa-layouts'].obs;
 const emergencyMode = nodecg.Replicant('emergencyMode');
 
 var emergencyDoubleCheck = false;

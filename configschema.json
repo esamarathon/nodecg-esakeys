@@ -5,7 +5,12 @@
 		"obsScenes": {
 			"type": "object",
 			"properties": {
-				"gameLayout": {"type": "string", "default": "Game Layout"},
+				"gameLayout": {"type": "string", "default": "Game Layout"}
+			}
+		},
+		"obsGroups": {
+			"type": "object",
+			"properties": {
 				"capture1": {"type": "string", "default": "Game Capture 1"},
 				"capture2": {"type": "string", "default": "Game Capture 2"},
 				"capture3": {"type": "string", "default": "Game Capture 3"},

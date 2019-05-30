@@ -14,7 +14,7 @@
   "nodecg": {
     "compatibleRange": "^1.0.0",
     "bundleDependencies": {
-      "nodecg-obs-util": "^1.0.0"
+      "esa-layouts": "^1.0.0"
     }
   },
   "dependencies": {

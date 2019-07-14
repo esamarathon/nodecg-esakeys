@@ -28,10 +28,10 @@ var resetAllCroppingTimeout;
 
 // Key between code value and scene name in OBS.
 const gameCaptureKey = {
-	0: nodecg.bundleConfig.obsScenes.capture1,
-	1: nodecg.bundleConfig.obsScenes.capture2,
-	2: nodecg.bundleConfig.obsScenes.capture3,
-	3: nodecg.bundleConfig.obsScenes.capture4
+	0: nodecg.bundleConfig.obsVirtualScenes.capture1,
+	1: nodecg.bundleConfig.obsVirtualScenes.capture2,
+	2: nodecg.bundleConfig.obsVirtualScenes.capture3,
+	3: nodecg.bundleConfig.obsVirtualScenes.capture4
 };
 
 // Key between code value and source name in OBS.
@@ -67,10 +67,9 @@ function checkCropping(i) {
 	obs.send('GetSceneItemProperties', {
 		'scene-name': gameCaptureKey[i],
 		'item': rackKey[0]
-	}).then((data) => {
-		cropCache[i] = data.crop;
-	}).catch((err) => {
-		nodecg.log.warn(`Cannot get OBS source settings [${gameCaptureKey[i]}: ${rackKey[0]}]: ${err.error}`);
+	}, (err, data) => {
+		if (!err)
+			cropCache[i] = data.crop;
 	});
 }
 
@@ -81,12 +80,11 @@ function checkRackVisibility(i, j) {
 	obs.send('GetSceneItemProperties', {
 		'scene-name': gameCaptureKey[i],
 		'item': rackKey[j]
-	}).then((data) => {
-		if (data.visible) {
+	}, (err, data) => {
+		if (!err) {
+			if (data.visible)
 				rack[i] = j;
 		}
-	}).catch((err) => {
-		nodecg.log.warn(`Cannot get OBS source settings [${gameCaptureKey[i]}: ${rackKey[j]}]: ${err.error}`);
 	});
 }
 

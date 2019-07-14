@@ -16,7 +16,7 @@
 				"gameLayout"
 			]
 		},
-		"obsGroups": {
+		"obsVirtualScenes": {
 			"type": "object",
 			"additionalProperties": false,
 			"properties": {

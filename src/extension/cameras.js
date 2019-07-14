@@ -23,15 +23,14 @@ var captureTimeout;
 
 // Key between code value and scene name in OBS.
 const cameraCaptureKey = {
-	0: nodecg.bundleConfig.obsGroups.camera1,
-	1: nodecg.bundleConfig.obsGroups.camera2,
+	0: nodecg.bundleConfig.obsVirtualScenes.camera1,
+	1: nodecg.bundleConfig.obsVirtualScenes.camera2,
 };
 
 // Key between code value and source name in OBS.
 const cameraSourceKey = {
-	0: nodecg.bundleConfig.obsSources.cam1,
-	1: nodecg.bundleConfig.obsSources.cam2,
-	2: nodecg.bundleConfig.obsSources.cam3
+	0: nodecg.bundleConfig.obsSources.camSource1,
+	1: nodecg.bundleConfig.obsSources.camSource2
 };
 
 nodecg.listenFor('turnOffCameraSelection', turnOffCaptureSelection);
@@ -40,57 +39,27 @@ nodecg.listenFor('turnOffCameraSelection', turnOffCaptureSelection);
 // We already check this in obs.js but we need to do more on connection here.
 obs.on('ConnectionOpened', () => {
 	// Runs a camera visibility check using the function below.
+	// 1 loop for camera captures, 1 for camera sources
 	for (var i = 0; i < 2; i++) {
-		checkCameraVisibility(i);
+		for (var j = 0; j < 2; j++) {
+			checkCameraVisibility(i, j);
+		}
 	}
 });
 
 // A bit of a sloppy/lazy way to get current camera visibility on startup from OBS.
 // Used by looping through all camera captures/camera sources and updating the value.
 // If 2 camera sources are visible, this could mess things up.
-function checkCameraVisibility(i) {
-	obs.send('GetSceneList').then((data) => {
-		const gameLayout = findGameLayout(data);
-		const groupChildren = getGroupChildren(gameLayout.sources, cameraCaptureKey[i]);
-		for (var j = 0; j < groupChildren.length; j++) {
-			const visible = groupChildren[j].render;
-			if (visible) {
-				switch (groupChildren[j].name) {
-					case cameraSourceKey[0]:
-						cam[i] = 0;
-						return;
-					case cameraSourceKey[1]:
-						cam[i] = 1;
-						return;
-					case cameraSourceKey[2]:
-						cam[i] = 2;
-						return;	
-				}
-			}
+function checkCameraVisibility(i, j) {
+	obs.send('GetSceneItemProperties', {
+		'scene-name': cameraCaptureKey[i],
+		'item': cameraSourceKey[j]
+	}, (err, data) => {
+		if (!err) {
+			if (data.visible)
+				cam[i] = j;
 		}
-	}).catch((err) => {
-		nodecg.log.warn(`Cannot get OBS scene list: ${err.error}`);
 	});
-
-	obs.send('GetSceneList').then((data) => {
-
-	});
-}
-
-function findGameLayout(data) {
-	for (var i = 0; i < data.scenes.length; i++) {
-		if (data.scenes[i].name === nodecg.bundleConfig.obsScenes.gameLayout) {
-			return data.scenes[i];
-		}
-	}
-}
-
-function getGroupChildren(sceneItems, name) {
-	for (var i = 0; i < sceneItems.length; i++) {
-		if (sceneItems[i].type === 'group' && sceneItems[i].name === name) {
-			return sceneItems[i].groupChildren;
-		}
-	}
 }
 
 // Listen to pressed keys.
@@ -140,7 +109,7 @@ xkeys.on('downKey', keyIndex => {
 	}
 
 	// If a capture is selected, we can use the keys to choose the current camera.
-	if (capture >= 0 && (keyIndex === 72 || keyIndex === 73 || keyIndex === 74)) {
+	if (capture >= 0 && (keyIndex === 72 || keyIndex === 73)) {
 		var oldCam = cam[capture];
 		cam[capture] = keyIndex-72;
 		toggleCameraSourceKey(keyIndex, true);
@@ -306,7 +275,7 @@ function getCameraCropping(i) {
 // Used to change what camera source is visible on the current game capture.
 // We have to loop through all the camera sources to be able to turn off the other ones.
 function changeCameraSource() {
-	for (var i = 0; i < 3; i++) {
+	for (var i = 0; i < 2; i++) {
 		(function(i) {
 			// Setup options for this camera source.
 			var options = {

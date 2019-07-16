@@ -1,0 +1,1 @@
+{"version":3,"file":"nodecg-api-context.js","sourceRoot":"","sources":["../../src/extension/utils/nodecg-api-context.js"],"names":[],"mappings":"AAAA,oGAAoG;AAEpG,YAAY,CAAC;AAEb,IAAI,OAAO,CAAC;AACZ,MAAM,CAAC,OAAO,GAAG;IAChB,GAAG;QACF,OAAO,OAAO,CAAC;IAChB,CAAC;IACD,GAAG,CAAC,GAAG;QACN,OAAO,GAAG,GAAG,CAAC;IACf,CAAC;CACD,CAAC"}

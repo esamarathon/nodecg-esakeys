@@ -9,7 +9,7 @@ export interface Configschema {
   obsScenes: {
     gameLayout: string;
   };
-  obsGroups: {
+  obsVirtualScenes: {
     capture1: string;
     capture2: string;
     capture3: string;

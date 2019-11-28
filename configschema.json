@@ -113,7 +113,7 @@
 	},
 	"required": [
 		"obsScenes",
-		"obsGroups",
+		"obsVirtualScenes",
 		"obsSources",
 		"emergencyMode"
 	]
